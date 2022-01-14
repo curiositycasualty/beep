@@ -16,7 +16,7 @@ addons:
 env:
   global:
     - TREE=birch
-  matrix:
+  jobs:
     - BIRD=hummingbird
     - BIRD=eagle
     - BIRD=bluejay
@@ -29,9 +29,9 @@ cache:
 stages:
   - Tree Bird Tests
 
-# jobs:
-#   include:
-#     - stage: Tree Bird Tests
-#       script:
+jobs:
+  include:
+    - name: "Tree Bird Tests (Pine)"
+      env: TREE=pine
 
 script: make BIRD=$BIRD test
