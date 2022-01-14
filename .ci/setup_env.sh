@@ -81,7 +81,7 @@ function main() {
     if [ -n "$DOWNLOAD_ONLY" ]; then
         kong-ngx-build \
             \
-            --download-only \
+            --donwload-extract-only \
             \
             --work "$DOWNLOAD_ROOT" \
             --prefix "$INSTALL_ROOT" \
@@ -108,6 +108,6 @@ function main() {
         -j "$JOBS"
 }
 
-set -x
+# set -x
 main "$@"
-set +x
+# set +x
