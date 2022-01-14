@@ -33,4 +33,4 @@ jobs:
   include:
     - stage: Tree Bird Tests
       script:
-        - make $BIRD test
+        - make BIRD=$BIRD test
