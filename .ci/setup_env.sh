@@ -108,6 +108,6 @@ function main() {
         -j "$JOBS"
 }
 
-# set -x
+set -x
 main "$@"
-# set +x
+set +x

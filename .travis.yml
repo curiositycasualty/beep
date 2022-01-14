@@ -21,8 +21,8 @@ env:
     - TREE=birch
   jobs:
     - BIRD=eagle
-    - BIRD=bluejay
-    - BIRD=hummingbird
+    # - BIRD=bluejay
+    # - BIRD=hummingbird
 
 install:
   - source .ci/setup_env.sh
@@ -39,12 +39,12 @@ before_cache:
 stages:
   - name: 'Tree Tests: $BIRD'
 
-jobs:
-  include:
-    - stage: "Tree Bird Tests Additional"
-      env:
-        - TREE=pine
-        - BIRD=helicopter
+# jobs:
+#   include:
+#     - stage: "Tree Bird Tests Additional"
+#       env:
+#         - TREE=pine
+#         - BIRD=helicopter
 
 script: |
   make \
