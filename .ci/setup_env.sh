@@ -22,6 +22,8 @@ function set_env() {
 
     export INSTALL_CACHE="${INSTALL_CACHE:=\/install-cache}"
     export INSTALL_ROOT="${INSTALL_CACHE}/${DEPS_HASH}"
+
+    env | sort
 }
 
 function main() {
@@ -66,19 +68,21 @@ function main() {
         "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD"
 
     echo kong-ngx-build \
-        --work "$DOWNLOAD_ROOT" \
-        --prefix "$INSTALL_ROOT" \
-        --openresty "$OPENRESTY" \
+        --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
+        --debug \
         --kong-nginx-module "$KONG_NGINX_MODULE_BRANCH" \
         --luarocks "$LUAROCKS" \
+        --openresty "$OPENRESTY" \
         --openssl "$OPENSSL" \
-        --debug \
-        --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
+        --prefix "$INSTALL_ROOT" \
+        --work "$DOWNLOAD_ROOT" \
         -j "$JOBS"
 
     if [ -n "$DOWNLOAD_ONLY" ]; then
         kong-ngx-build \
+            \
             --download-only \
+            \
             --work "$DOWNLOAD_ROOT" \
             --prefix "$INSTALL_ROOT" \
             --openresty "$OPENRESTY" \
@@ -93,14 +97,14 @@ function main() {
     fi
 
     kong-ngx-build \
-        --work "$DOWNLOAD_ROOT" \
-        --prefix "$INSTALL_ROOT" \
-        --openresty "$OPENRESTY" \
+        --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
+        --debug \
         --kong-nginx-module "$KONG_NGINX_MODULE_BRANCH" \
         --luarocks "$LUAROCKS" \
+        --openresty "$OPENRESTY" \
         --openssl "$OPENSSL" \
-        --debug \
-        --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
+        --prefix "$INSTALL_ROOT" \
+        --work "$DOWNLOAD_ROOT" \
         -j "$JOBS"
 }
 
