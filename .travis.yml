@@ -1,0 +1,36 @@
+dist: focal
+
+language: go
+
+go:
+  - "1.13.x"
+
+services:
+  - docker
+
+addons:
+  apt:
+    packages:
+      - figlet
+
+env:
+  global:
+    - TREE=birch
+  matrix:
+    - BIRD=hummingbird
+    - BIRD=eagle
+    - BIRD=bluejay
+
+# install:
+
+cache:
+  apt: true
+
+stages:
+  - Tree Bird Tests
+
+jobs:
+  include:
+    - stage: Tree Bird Tests
+      script:
+        - make $BIRD test
