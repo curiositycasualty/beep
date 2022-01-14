@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# set -eu
-set -x
-
 function dep_version() {
     grep "$1" .requirements | sed -e 's/.*=//' | tr -d '\n'
 }
@@ -107,4 +104,6 @@ function main() {
         -j "$JOBS"
 }
 
+# set -x
 main "$@"
+# set +x
