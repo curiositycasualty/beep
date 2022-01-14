@@ -29,8 +29,9 @@ cache:
 stages:
   - Tree Bird Tests
 
-jobs:
-  include:
-    - stage: Tree Bird Tests
-      script:
-        - make BIRD=$BIRD test
+# jobs:
+#   include:
+#     - stage: Tree Bird Tests
+#       script:
+
+script: make BIRD=$BIRD test
