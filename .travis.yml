@@ -34,6 +34,7 @@ jobs:
     - stage: "Tree Bird Tests Additional"
       env:
         - TREE=pine
+        - BIRD=helicopter
 
 script: |
   make \
