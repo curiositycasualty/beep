@@ -32,6 +32,7 @@ stages:
 jobs:
   include:
     - stage: "Tree Bird Tests Additional"
-      env: TREE=pine
+      env:
+        - TREE=pine
 
 script: make BIRD=$BIRD test
