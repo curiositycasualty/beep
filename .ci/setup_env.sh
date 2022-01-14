@@ -5,15 +5,15 @@ function dep_version() {
 }
 
 function set_env() {
-    export YQ_VERSION='v4.5.0'
-    export OPENRESTY="$(dep_version RESTY_VERSION)"
-    export LUAROCKS="$(dep_version RESTY_LUAROCKS_VERSION)"
-    export OPENSSL="$(dep_version RESTY_OPENSSL_VERSION)"
-    export KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION="$(
+    _YQ_VERSION='v4.5.0'
+    _OPENRESTY="$(dep_version RESTY_VERSION)"
+    _LUAROCKS="$(dep_version RESTY_LUAROCKS_VERSION)"
+    _OPENSSL="$(dep_version RESTY_OPENSSL_VERSION)"
+    _KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION="$(
         dep_version KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION
     )"
 
-    export DEPS_HASH=$({
+    DEPS_HASH=$({
             cat \
                 .ci/setup_env.sh \
                 .travis.yml \
@@ -23,8 +23,18 @@ function set_env() {
         } | md5sum | awk '{ print $1 }'
     )
 
-    export INSTALL_CACHE="${INSTALL_CACHE:=\/install-cache}"
-    export INSTALL_ROOT="${INSTALL_CACHE}/${DEPS_HASH}"
+    INSTALL_CACHE="${INSTALL_CACHE:=\/install-cache}"
+    INSTALL_ROOT="${INSTALL_CACHE}/${DEPS_HASH}"
+
+    export \
+        _YQ_VERSION \
+        _OPENRESTY \
+        _LUAROCKS \
+        _OPENSSL \
+        _KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION \
+        DEPS_HASH \
+        INSTALL_CACHE \
+        INSTALL_ROOT
 
     env | sort
 }
@@ -36,7 +46,7 @@ function main() {
     export PATH=$PATH:$HOME/.local/bin
 
     if [[ ! -e "$HOME"/.local/bin/yq ]]; then
-        wget "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" \
+        wget "https://github.com/mikefarah/yq/releases/download/${_YQ_VERSION}/yq_linux_amd64" \
             -O "$HOME"/.local/bin/yq \
                 && chmod +x "$HOME"/.local/bin/yq
     fi
@@ -66,7 +76,7 @@ function main() {
         && rm -rf "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD"
 
     git clone -b \
-        "$KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION" \
+        "$_KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION" \
         "https://github.com/fffonion/lua-resty-openssl-aux-module" \
         "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD"
 
@@ -74,9 +84,9 @@ function main() {
         --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
         --debug \
         --kong-nginx-module "$KONG_NGINX_MODULE_BRANCH" \
-        --luarocks "$LUAROCKS" \
-        --openresty "$OPENRESTY" \
-        --openssl "$OPENSSL" \
+        --luarocks "$_LUAROCKS" \
+        --openresty "$_OPENRESTY" \
+        --openssl "$_OPENSSL" \
         --prefix "$INSTALL_ROOT" \
         --work "$DOWNLOAD_ROOT" \
         -j "$JOBS"
@@ -89,9 +99,9 @@ function main() {
             --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
             --debug \
             --kong-nginx-module "$KONG_NGINX_MODULE_BRANCH" \
-            --luarocks "$LUAROCKS" \
-            --openresty "$OPENRESTY" \
-            --openssl "$OPENSSL" \
+            --luarocks "$_LUAROCKS" \
+            --openresty "$_OPENRESTY" \
+            --openssl "$_OPENSSL" \
             --prefix "$INSTALL_ROOT" \
             --work "$DOWNLOAD_ROOT" \
             -j "$JOBS"
@@ -103,14 +113,14 @@ function main() {
         --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
         --debug \
         --kong-nginx-module "$KONG_NGINX_MODULE_BRANCH" \
-        --luarocks "$LUAROCKS" \
-        --openresty "$OPENRESTY" \
-        --openssl "$OPENSSL" \
+        --luarocks "$_LUAROCKS" \
+        --openresty "$_OPENRESTY" \
+        --openssl "$_OPENSSL" \
         --prefix "$INSTALL_ROOT" \
         --work "$DOWNLOAD_ROOT" \
         -j "$JOBS"
 }
 
-# set -x
+set -x
 main "$@"
-# set +x
+set +x
