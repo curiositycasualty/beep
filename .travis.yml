@@ -17,9 +17,9 @@ env:
   global:
     - TREE=birch
   jobs:
-    - BIRD=hummingbird
     - BIRD=eagle
     - BIRD=bluejay
+    - BIRD=hummingbird
 
 # install:
 
@@ -35,4 +35,8 @@ jobs:
       env:
         - TREE=pine
 
-script: make BIRD=$BIRD test
+script: |
+  make \
+    BIRD=$BIRD \
+    TREE=$TREE \
+    test
