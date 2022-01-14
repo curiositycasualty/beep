@@ -15,16 +15,26 @@ addons:
 
 env:
   global:
+    - INSTALL_CACHE=$HOME/install-cache
+    - DOWNLOAD_ROOT=$HOME/download-root
+
     - TREE=birch
   jobs:
     - BIRD=eagle
     - BIRD=bluejay
     - BIRD=hummingbird
 
-# install:
+install:
+  - source .ci/setup_env.sh
 
 cache:
   apt: true
+  directories:
+    - $INSTALL_CACHE
+    - $DOWNLOAD_ROOT
+
+before_cache:
+  - source DOWNLOAD_ONLY=1 .ci/setup_env.sh
 
 stages:
   - Tree Bird Tests
