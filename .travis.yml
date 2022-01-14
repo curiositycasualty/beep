@@ -37,7 +37,7 @@ before_cache:
   - DOWNLOAD_ONLY=1 source .ci/setup_env.sh
 
 stages:
-  - Tree Bird Tests
+  - name: 'Tree Tests: $BIRD'
 
 jobs:
   include:
