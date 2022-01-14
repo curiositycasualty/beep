@@ -9,6 +9,9 @@ function set_env() {
     export OPENRESTY="$(dep_version RESTY_VERSION)"
     export LUAROCKS="$(dep_version RESTY_LUAROCKS_VERSION)"
     export OPENSSL="$(dep_version RESTY_OPENSSL_VERSION)"
+    export KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION="$(
+        dep_version KONG_DEP_LUA_RESTY_OPENSSL_AUX_MODULE_VERSION
+    )"
 
     export DEPS_HASH=$({
             cat \
@@ -83,14 +86,14 @@ function main() {
             \
             --donwload-extract-only \
             \
-            --work "$DOWNLOAD_ROOT" \
-            --prefix "$INSTALL_ROOT" \
-            --openresty "$OPENRESTY" \
+            --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
+            --debug \
             --kong-nginx-module "$KONG_NGINX_MODULE_BRANCH" \
             --luarocks "$LUAROCKS" \
+            --openresty "$OPENRESTY" \
             --openssl "$OPENSSL" \
-            --debug \
-            --add-module "$LUA_RESTY_OPENSSL_AUX_MODULE_DOWNLOAD" \
+            --prefix "$INSTALL_ROOT" \
+            --work "$DOWNLOAD_ROOT" \
             -j "$JOBS"
 
         exit "$?"
